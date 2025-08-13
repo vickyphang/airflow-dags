@@ -1,14 +1,14 @@
-from airflow import DAG
-from airflow.operators.dummy_operator import DummyOperator
-from datetime import datetime
+import datetime
 
-default_args = {
-    'owner': 'tenant2',
-    'start_date': datetime(2025, 3, 6),
-}
+from airflow.sdk import DAG
+from airflow.providers.standard.operators.empty import EmptyOperator
 
-with DAG('tenant2_dag', default_args=default_args, schedule_interval='@daily') as dag:
-    task1 = DummyOperator(task_id='task1')
-    task2 = DummyOperator(task_id='task2')
-    task3 = DummyOperator(task_id='task3')
+with DAG(
+    dag_id="tenant2_dag",
+    start_date=datetime.datetime(2025, 8, 13),
+    schedule="@daily",
+):
+    task1 = EmptyOperator(task_id="task1")
+    task2 = EmptyOperator(task_id="task2")
+    task3 = EmptyOperator(task_id="task3")
     task1 >> task2 >> task3
